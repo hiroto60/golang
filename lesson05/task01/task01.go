@@ -82,7 +82,6 @@ func main() {
 	// ペットのスライスを反復処理して、それぞれのペットが食事をして、遊んで、眠る様子を表示します
 	for _, pet := range pets {
 		fmt.Printf("%vの情報:\n", pet.Name())
-		pet.Name()
 		pet.Eat()
 		pet.Play()
 		pet.Sleep()
