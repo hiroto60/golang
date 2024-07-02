@@ -73,13 +73,11 @@ func (c Cat) translateMood() string {
 }
 
 func main() {
-	// ペットのスライスを作成し、犬と猫を追加します
 	pets := []Pet{
 		&Dog{name: "バディ", energy: 50},
 		&Cat{name: "ウィスカー", mood: "happy"},
 	}
 
-	// ペットのスライスを反復処理して、それぞれのペットが食事をして、遊んで、眠る様子を表示します
 	for _, pet := range pets {
 		fmt.Printf("%vの情報:\n", pet.Name())
 		pet.Eat()
