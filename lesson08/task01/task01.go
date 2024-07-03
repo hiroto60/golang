@@ -29,6 +29,7 @@ func readFile(path string, ch chan<- int, wg *sync.WaitGroup) {
 	fp, err := os.ReadFile(path)
 	if err != nil {
 		fmt.Printf("Can't open file,err:%v", err)
+		return
 	}
 
 	count := len(fp)
