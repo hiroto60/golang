@@ -31,38 +31,24 @@ func main() {
 		return
 	}
 
-	selectStmt, err := db.Prepare("SELECT * FROM books WHERE title Like ?")
+	selectStmt, err := db.Prepare("SELECT * FROM books WHERE title = ?")
 	if err != nil {
 		fmt.Println("Prepare error:", err)
 		return
 	}
 
-	var selectedBooks []Book
+	var selectedBook Book
 
-	rows, err := selectStmt.Query("%" + title + "%")
+	err = selectStmt.QueryRow(title).Scan(&selectedBook.ID, &selectedBook.Title, &selectedBook.Price, &selectedBook.CreatedAt)
 	if err != nil {
-		fmt.Println("検索に失敗しました:", err)
+		if err == sql.ErrNoRows {
+			fmt.Println("該当する書籍が見つかりませんでした。")
+		} else {
+			fmt.Println("検索に失敗しました:", err)
+		}
 		return
 	}
 
-	for rows.Next() {
-		var book Book
-		err = rows.Scan(&book.ID, &book.Title, &book.Price, &book.CreatedAt)
-		if err != nil {
-			fmt.Println("検索結果の読み込みに失敗しました:", err)
-			return
-		}
-
-		selectedBooks = append(selectedBooks, book)
-	}
-
-	if len(selectedBooks) == 0 {
-		fmt.Println("指定されたタイトルのレコードが見つかりませんでした")
-		return
-	} else {
-		for _, book := range selectedBooks {
-			fmt.Printf("%v %v %v %v\n", book.ID, book.Title, book.Price, book.CreatedAt)
-		}
-	}
+	fmt.Printf("%v %v %v %v\n", selectedBook.ID, selectedBook.Title, selectedBook.Price, selectedBook.CreatedAt)
 
 }
