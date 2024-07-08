@@ -1,0 +1,26 @@
+### Read: すべての本を取得
+GET http://localhost:8080/books HTTP/1.1
+
+### Read: 特定の本を取得
+GET http://localhost:8080/books/1 HTTP/1.1
+
+### Create: 新しい本を作成
+POST http://localhost:8080/books HTTP/1.1
+content-type: application/json
+
+{
+    "title": "Book 4",
+    "price": 28000
+}
+
+### Update: 特定の本を更新
+PUT http://localhost:8080/books/1 HTTP/1.1
+content-type: application/json
+
+{
+    "title": "Book 1 Update",
+    "price": 1200
+}
+
+### Delete: 特定の本を削除
+DELETE http://localhost:8080/books/2 HTTP/1.1
