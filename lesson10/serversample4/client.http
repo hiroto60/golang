@@ -9,7 +9,7 @@ POST http://localhost:8080/books HTTP/1.1
 content-type: application/json
 
 {
-    "title": "Book 4",
+    "title": "Book 5",
     "price": 28000
 }
 
@@ -23,4 +23,4 @@ content-type: application/json
 }
 
 ### Delete: 特定の本を削除
-DELETE http://localhost:8080/books/2 HTTP/1.1
+DELETE http://localhost:8080/books/9 HTTP/1.1
