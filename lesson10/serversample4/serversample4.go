@@ -104,24 +104,28 @@ func getBooks(w http.ResponseWriter, r *http.Request) {
 // createBook は新しい本を作成
 func createBook(w http.ResponseWriter, r *http.Request) {
 	var book Book
-	// 未実装
-	// json.NewDecoder(r.Body).Decode(&book)
-	// book.ID = len(books) + 1
-	// book.CreatedAt = time.Now()
-	// books = append(books, book)
+	json.NewDecoder(r.Body).Decode(&book)
+	book.CreatedAt = time.Now()
+	result := db.Create(&book)
+	if result.Error != nil {
+		http.Error(w, "本の作成に失敗しました", http.StatusInternalServerError)
+		return
+	}
 	json.NewEncoder(w).Encode(book)
+
 }
 
 // getBook は特定の本を取得
 func getBook(w http.ResponseWriter, r *http.Request, id int) {
 	// 未実装
-	// for _, book := range books {
-	//   if book.ID == id {
-	//     json.NewEncoder(w).Encode(book)
-	//     return
-	//   }
-	// }
-	http.NotFound(w, r)
+	var book Book
+	result := db.First(&book, id)
+	if result.Error != nil {
+		http.NotFound(w, r)
+		return
+	}
+
+	json.NewEncoder(w).Encode(book)
 }
 
 // updateBook は特定の本を更新
@@ -147,13 +151,11 @@ func updateBook(w http.ResponseWriter, r *http.Request, id int) {
 
 // deleteBook は特定の本を削除
 func deleteBook(w http.ResponseWriter, r *http.Request, id int) {
-	// 未実装
-	// for i, book := range books {
-	//   if book.ID == id {
-	//     books = append(books[:i], books[i+1:]...)
-	//     w.WriteHeader(http.StatusNoContent)
-	//     return
-	//   }
-	// }
-	http.NotFound(w, r)
+	result := db.Delete(&Book{}, id)
+	if result.Error != nil {
+		http.Error(w, "本の削除に失敗しました", http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusNoContent)
 }
