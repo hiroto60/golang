@@ -1,0 +1,21 @@
+### Read: すべての投稿を取得
+GET http://localhost:8080/posts HTTP/1.1
+
+### Read: 特定の投稿を取得
+GET http://localhost:8080/posts/1 HTTP/1.1
+
+### Create: 新しい投稿を作成
+POST http://localhost:8080/posts HTTP/1.1 content-type: application/json
+{
+"title": "新しい投稿",
+"content": "投稿の内容です",
+"likes": 10 }
+
+### Update: 特定の投稿を更新
+PUT http://localhost:8080/posts/1 HTTP/1.1 content-type: application/json
+{
+"title": "新しい投稿 update", "content": "投稿の内容です update", "likes": 11
+}
+
+### Delete: 特定の投稿を削除
+DELETE http://localhost:8080/posts/1 HTTP/1.1
