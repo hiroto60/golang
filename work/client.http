@@ -2,7 +2,7 @@
 GET http://localhost:8080/posts HTTP/1.1
 
 ### Read: 特定の投稿を取得
-GET http://localhost:8080/posts/1 HTTP/1.1
+GET http://localhost:8080/posts/100 HTTP/1.1
 
 ### Create: 新しい投稿を作成
 POST http://localhost:8080/posts HTTP/1.1 content-type: application/json

@@ -2,6 +2,7 @@ package server
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/hiroto60/golang/controller"
 	"github.com/hiroto60/golang/model"
@@ -23,8 +24,20 @@ func HandlePosts(w http.ResponseWriter, r *http.Request) {
 }
 
 func HandlePost(w http.ResponseWriter, r *http.Request) {
+	db := model.GetDB()
+	bm := model.NewBlogModel(db)
+	bc := controller.NewBlogController(bm)
+
+	//pathパラメータの取得
+	id, err := strconv.Atoi(r.URL.Path[len("/books/"):])
+	if err != nil {
+		http.NotFound(w, r)
+		return
+	}
+
 	switch r.Method {
 	case http.MethodGet:
+		bc.GetPost(w, r, id)
 	case http.MethodPut:
 	case http.MethodDelete:
 	case http.MethodPost:

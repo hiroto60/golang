@@ -9,6 +9,7 @@ import (
 
 type BlogModeler interface {
 	GetPosts(w http.ResponseWriter, r *http.Request) (post []Post, err error)
+	GetPost(w http.ResponseWriter, r *http.Request, id int) (*Post, error)
 	CreatePost(w http.ResponseWriter, r *http.Request, post *Post) error
 }
 
@@ -38,6 +39,21 @@ func (m *BlogModel) GetPosts(w http.ResponseWriter, r *http.Request) ([]Post, er
 
 	return posts, nil
 
+}
+
+func (m *BlogModel) GetPost(w http.ResponseWriter, r *http.Request, id int) (*Post, error) {
+	var post Post
+	result := m.DB.First(&post, id)
+	if result.Error != nil {
+		if result.Error == gorm.ErrRecordNotFound {
+			http.Error(w, "Post not found", http.StatusBadRequest)
+			return nil, result.Error
+		}
+		http.Error(w, "Failed to get post", http.StatusInternalServerError)
+		return nil, result.Error
+	}
+
+	return &post, nil
 }
 
 func (m *BlogModel) CreatePost(w http.ResponseWriter, r *http.Request, post *Post) error {
