@@ -59,6 +59,16 @@ func (c *BlogController) CreatePost(w http.ResponseWriter, r *http.Request) {
 
 }
 
+func (c *BlogController) Likes(w http.ResponseWriter, r *http.Request, id int) {
+	err := c.Model.Likes(w, r, id)
+	if err != nil {
+		log.Println("Failed to update post: ", err)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+}
+
 func (c *BlogController) DeletePost(w http.ResponseWriter, r *http.Request, id int) {
 	err := c.Model.DeletePost(w, r, id)
 	if err != nil {

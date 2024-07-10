@@ -21,3 +21,6 @@ PUT http://localhost:8080/posts/1 HTTP/1.1 content-type: application/json
 
 ### Delete: 特定の投稿を削除
 DELETE http://localhost:8080/posts/100 HTTP/1.1
+
+### Post: Likesの数を増やす
+POST http://localhost:8080/posts/1 HTTP/1.1

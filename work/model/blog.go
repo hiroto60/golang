@@ -11,6 +11,7 @@ type BlogModeler interface {
 	GetPosts(w http.ResponseWriter, r *http.Request) (post []Post, err error)
 	GetPost(w http.ResponseWriter, r *http.Request, id int) (*Post, error)
 	CreatePost(w http.ResponseWriter, r *http.Request, post *Post) error
+	Likes(w http.ResponseWriter, r *http.Request, id int) error
 	DeletePost(w http.ResponseWriter, r *http.Request, id int) error
 }
 
@@ -65,6 +66,23 @@ func (m *BlogModel) CreatePost(w http.ResponseWriter, r *http.Request, post *Pos
 		return result.Error
 	}
 
+	return nil
+}
+
+func (m *BlogModel) Likes(w http.ResponseWriter, r *http.Request, id int) error {
+	var post Post
+	result := m.DB.First(&post, id)
+	if result.Error != nil {
+		http.Error(w, "Failed to get post", http.StatusInternalServerError)
+		return result.Error
+	}
+
+	post.Likes++
+	result = m.DB.Save(&post)
+	if result.Error != nil {
+		http.Error(w, "Failed to update post", http.StatusInternalServerError)
+		return result.Error
+	}
 	return nil
 }
 

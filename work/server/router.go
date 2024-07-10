@@ -42,6 +42,7 @@ func HandlePost(w http.ResponseWriter, r *http.Request) {
 	case http.MethodDelete:
 		bc.DeletePost(w, r, id)
 	case http.MethodPost:
+		bc.Likes(w, r, id)
 	default:
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 	}
