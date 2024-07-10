@@ -11,6 +11,7 @@ type BlogModeler interface {
 	GetPosts(w http.ResponseWriter, r *http.Request) (post []Post, err error)
 	GetPost(w http.ResponseWriter, r *http.Request, id int) (*Post, error)
 	CreatePost(w http.ResponseWriter, r *http.Request, post *Post) error
+	DeletePost(w http.ResponseWriter, r *http.Request, id int) error
 }
 
 type Post struct {
@@ -61,6 +62,18 @@ func (m *BlogModel) CreatePost(w http.ResponseWriter, r *http.Request, post *Pos
 	result := m.DB.Create(&post)
 	if result.Error != nil {
 		http.Error(w, "Failed to create post", http.StatusInternalServerError)
+		return result.Error
+	}
+
+	return nil
+}
+
+func (m *BlogModel) DeletePost(w http.ResponseWriter, r *http.Request, id int) error {
+	var post Post
+
+	result := m.DB.Delete(&post, id)
+	if result.Error != nil {
+		http.Error(w, "Failed to delete post", http.StatusInternalServerError)
 		return result.Error
 	}
 

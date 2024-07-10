@@ -58,3 +58,13 @@ func (c *BlogController) CreatePost(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(post)
 
 }
+
+func (c *BlogController) DeletePost(w http.ResponseWriter, r *http.Request, id int) {
+	err := c.Model.DeletePost(w, r, id)
+	if err != nil {
+		log.Println("Failed to delete post: ", err)
+		return
+	}
+
+	w.WriteHeader(http.StatusNoContent)
+}

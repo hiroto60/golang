@@ -40,6 +40,7 @@ func HandlePost(w http.ResponseWriter, r *http.Request) {
 		bc.GetPost(w, r, id)
 	case http.MethodPut:
 	case http.MethodDelete:
+		bc.DeletePost(w, r, id)
 	case http.MethodPost:
 	default:
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
