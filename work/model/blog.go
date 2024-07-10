@@ -8,7 +8,7 @@ import (
 )
 
 type BlogModeler interface {
-	GetPosts()
+	GetPosts(w http.ResponseWriter, r *http.Request) (post []Post, err error)
 	CreatePost(w http.ResponseWriter, r *http.Request, post *Post) error
 }
 
@@ -28,8 +28,16 @@ func NewBlogModel(DB *gorm.DB) BlogModeler {
 	return &BlogModel{DB: DB}
 }
 
-func (m *BlogModel) GetPosts() {
-	// Get post
+func (m *BlogModel) GetPosts(w http.ResponseWriter, r *http.Request) ([]Post, error) {
+	var posts []Post
+	result := m.DB.Find(&posts)
+	if result.Error != nil {
+		http.Error(w, "Failed to get posts", http.StatusInternalServerError)
+		return nil, result.Error
+	}
+
+	return posts, nil
+
 }
 
 func (m *BlogModel) CreatePost(w http.ResponseWriter, r *http.Request, post *Post) error {

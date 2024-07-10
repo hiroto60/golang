@@ -16,8 +16,15 @@ func NewBlogController(m model.BlogModeler) *BlogController {
 	return &BlogController{Model: m}
 }
 
-func GetPosts() {
-	// Get post
+func (c *BlogController) GetPosts(w http.ResponseWriter, r *http.Request) {
+	posts, err := c.Model.GetPosts(w, r)
+	if err != nil {
+		log.Println("Failed to get posts: ", err)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(posts)
 }
 
 func (c *BlogController) CreatePost(w http.ResponseWriter, r *http.Request) {
@@ -26,11 +33,13 @@ func (c *BlogController) CreatePost(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Println("Failed to decode post: ", err)
 		http.Error(w, "Failed to decode post", http.StatusBadRequest)
+		return
 	}
 
 	err = c.Model.CreatePost(w, r, &post)
 	if err != nil {
 		log.Println("Failed to create post: ", err)
+		return
 	}
 
 	w.WriteHeader(http.StatusCreated)

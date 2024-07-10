@@ -9,12 +9,13 @@ import (
 
 func HandlePosts(w http.ResponseWriter, r *http.Request) {
 	db := model.GetDB()
+	bm := model.NewBlogModel(db)
+	bc := controller.NewBlogController(bm)
 
 	switch r.Method {
 	case http.MethodGet:
+		bc.GetPosts(w, r)
 	case http.MethodPost:
-		bm := model.NewBlogModel(db)
-		bc := controller.NewBlogController(bm)
 		bc.CreatePost(w, r)
 	default:
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
