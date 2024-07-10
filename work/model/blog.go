@@ -12,6 +12,7 @@ type BlogModeler interface {
 	GetPost(w http.ResponseWriter, r *http.Request, id int) (*Post, error)
 	CreatePost(w http.ResponseWriter, r *http.Request, post *Post) error
 	Likes(w http.ResponseWriter, r *http.Request, id int) error
+	UpdatePost(w http.ResponseWriter, r *http.Request, id int, newPost *Post) error
 	DeletePost(w http.ResponseWriter, r *http.Request, id int) error
 }
 
@@ -73,6 +74,10 @@ func (m *BlogModel) Likes(w http.ResponseWriter, r *http.Request, id int) error 
 	var post Post
 	result := m.DB.First(&post, id)
 	if result.Error != nil {
+		if result.Error == gorm.ErrRecordNotFound {
+			http.Error(w, "Post not found", http.StatusBadRequest)
+			return result.Error
+		}
 		http.Error(w, "Failed to get post", http.StatusInternalServerError)
 		return result.Error
 	}
@@ -83,6 +88,23 @@ func (m *BlogModel) Likes(w http.ResponseWriter, r *http.Request, id int) error 
 		http.Error(w, "Failed to update post", http.StatusInternalServerError)
 		return result.Error
 	}
+	return nil
+}
+
+func (m *BlogModel) UpdatePost(w http.ResponseWriter, r *http.Request, id int, newPost *Post) error {
+	var post Post
+	result := m.DB.First(&post, id)
+	if result.Error != nil {
+		http.Error(w, "Failed to get post", http.StatusInternalServerError)
+		return result.Error
+	}
+
+	result = m.DB.Model(&post).Updates(&newPost)
+	if result.Error != nil {
+		http.Error(w, "Failed to update post", http.StatusInternalServerError)
+		return result.Error
+	}
+
 	return nil
 }
 

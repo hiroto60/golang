@@ -39,6 +39,7 @@ func HandlePost(w http.ResponseWriter, r *http.Request) {
 	case http.MethodGet:
 		bc.GetPost(w, r, id)
 	case http.MethodPut:
+		bc.UpdatePost(w, r, id)
 	case http.MethodDelete:
 		bc.DeletePost(w, r, id)
 	case http.MethodPost:
