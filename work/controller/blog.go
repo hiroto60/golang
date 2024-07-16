@@ -12,6 +12,7 @@ type BlogController struct {
 	Model model.BlogModeler
 }
 
+// BlogModelerというinterfaceeに依存しているが、具体的な実装には依存していない。渡すDBなどを気にしないで良い。
 func NewBlogController(m model.BlogModeler) *BlogController {
 	return &BlogController{Model: m}
 }
