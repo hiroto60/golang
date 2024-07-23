@@ -13,5 +13,6 @@ func main() {
 
 	todoModel2 := model.NewTodoModel2(db)
 	todoController2 := controller.NewTodoController2(todoModel2)
+
 	todoController2.GetPosts2()
 }
