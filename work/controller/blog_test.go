@@ -11,6 +11,7 @@ import (
 	"github.com/hiroto60/golang/model"
 )
 
+// BlogModeler interfaceを実装する構造体
 type MockPostModel struct {
 	Posts []model.Post
 	Err   error
@@ -20,19 +21,16 @@ func TestGetPosts(t *testing.T) {
 	// テスト用のデータ
 	testTodos := []model.Post{
 		{ID: 1, Title: "title1", Content: "content1", Likes: 0, CreatedAt: time.Now().Truncate(time.Millisecond)},
-		{ID: 2, Title: "title2", Content: "content2", Likes: 0, CreatedAt: time.Now().Truncate(time.Millisecond)},
+		{ID: 2, Title: "title2", Content: "content2", Likes: 0, CreatedAt: time.Now()},
 	}
 
 	mockModel := &MockPostModel{Posts: testTodos}
 
-	// TodoController の初期化
 	controller := NewBlogController(mockModel)
 
-	// テスト用のリクエストとレスポンスの作成
 	w := httptest.NewRecorder()
 	r := httptest.NewRequest(http.MethodGet, "/posts", nil)
 
-	// テスト対象のハンドラーを呼び出す
 	controller.GetPosts(w, r)
 
 	// レスポンスのステータスコードが 200 であることを検証
