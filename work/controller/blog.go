@@ -12,6 +12,7 @@ type BlogController struct {
 	Model model.BlogModeler
 }
 
+// BlogModelerというinterfaceeに依存しているが、具体的な実装には依存していない。渡すDBなどを気にしないで良い。
 func NewBlogController(m model.BlogModeler) *BlogController {
 	return &BlogController{Model: m}
 }
@@ -55,8 +56,6 @@ func (c *BlogController) CreatePost(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.WriteHeader(http.StatusCreated)
-	json.NewEncoder(w).Encode(post)
-
 }
 
 func (c *BlogController) Likes(w http.ResponseWriter, r *http.Request, id int) {

@@ -10,7 +10,7 @@ import (
 	"gorm.io/gorm"
 )
 
-var db *gorm.DB
+var DB *gorm.DB
 
 func init() {
 	// .envファイルを読み込む
@@ -28,7 +28,7 @@ func init() {
 
 	dsn := fmt.Sprintf("%s:%s@tcp(localhost:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", user, password, port, dbName)
 
-	db, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	DB, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
 		log.Println("データベースへの接続に失敗しました:", err)
 		return
@@ -37,5 +37,5 @@ func init() {
 }
 
 func GetDB() *gorm.DB {
-	return db
+	return DB
 }

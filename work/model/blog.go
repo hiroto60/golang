@@ -46,7 +46,7 @@ func (m *BlogModel) GetPosts(w http.ResponseWriter, r *http.Request) ([]Post, er
 
 func (m *BlogModel) GetPost(w http.ResponseWriter, r *http.Request, id int) (*Post, error) {
 	var post Post
-	result := m.DB.First(&post, id)
+	result := m.DB.First(&post, 2)
 	if result.Error != nil {
 		if result.Error == gorm.ErrRecordNotFound {
 			http.Error(w, "Post not found", http.StatusBadRequest)
